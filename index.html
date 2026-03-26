@@ -82,55 +82,7 @@
       </details>
     </div>
 
-    <div class="card" id="cardB">
-      <div class="row">
-        <div class="title-wrap">
-          <h2 id="titleB" data-base="tankB-Tripoli">tankB-Tripoli</h2>
-          <span id="statusB" class="device-status offline">OFFLINE</span>
-        </div>
-        <span id="badgeB" class="badge unknown">UNKNOWN</span>
-      </div>
 
-      <div class="row" style="align-items: baseline;">
-        <div class="gauge-wrap">
-          <div class="gauge" id="gaugeB" role="img" aria-label="Tank B level">
-            <svg viewBox="0 0 36 36" class="circular">
-              <path class="bg" d="M18 2.0845a15.9155 15.9155 0 0 1 0 31.831" pathLength="100"/>
-              <path id="meterB" class="meter" d="M18 2.0845a15.9155 15.9155 0 0 1 0 31.831" pathLength="100" stroke-dasharray="0 100" />
-            </svg>
-          </div>
-          <div class="gauge-label">
-            <div id="levelB" class="big">--%</div>
-            <div id="updatedB" class="muted">Last updated: —</div>
-          </div>
-        </div>
-        <div class="card-actions">
-          <label class="mode-wrap" for="modeB">
-            <span class="mode-text">Sensor Mode: Simulated / Real</span>
-            <span class="switch">
-              <input type="checkbox" id="modeB" aria-label="Sensor mode for tankB">
-              <span class="slider"></span>
-            </span>
-          </label>
-          <div id="modeMsgB" class="muted mode-msg">Mode: Simulated</div>
-          <button id="btnReadNowB" disabled>Read now</button>
-        </div>
-      </div>
-
-      <div class="kv">
- <!--       <div class="k">UTC timestamp</div><div id="tsB" class="mono">—</div> -->
-      </div>
-
-      <details class="history-accordion">
-        <summary>
-          <span class="history-title">History</span>
-          <span class="history-meta muted">Local time · last 5 days</span>
-        </summary>
-        <div class="history-content">
-          <ul id="histB"><li class="muted">—</li></ul>
-        </div>
-      </details>
-    </div>
   </main>
 
   <script src="js/config.js"></script>
