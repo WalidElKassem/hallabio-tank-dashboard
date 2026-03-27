@@ -52,15 +52,18 @@ window.updateDeviceTitle = function(deviceId, fwVersion){
 window.setTankUI = function(deviceId, latestObj){
   const suf = deviceId === "tankA" ? "A" : "B";
   const levelEl = document.getElementById("level" + suf);
+  const litersEl = document.getElementById("liters" + suf);
   const updatedEl = document.getElementById("updated" + suf);
   const sourceEl = document.getElementById("source" + suf);
   const tsEl = document.getElementById("ts" + suf);
   const badgeEl = document.getElementById("badge" + suf);
   const statusEl = document.getElementById("status" + suf);
+  const capacityLiters = Number(window.TANK_CAPACITY_LITERS && window.TANK_CAPACITY_LITERS[deviceId]);
 
   if (!latestObj || !latestObj.data) {
     window.updateDeviceTitle(deviceId, null);
     if(levelEl) levelEl.textContent = "--%";
+    if(litersEl) litersEl.textContent = "-- L";
     if(updatedEl) updatedEl.textContent = "Last updated: —";
     if(sourceEl) sourceEl.textContent = "—";
     if(tsEl) tsEl.textContent = "—";
@@ -74,6 +77,14 @@ window.setTankUI = function(deviceId, latestObj){
   const lvl = Number(d.level_pct);
 
   if(levelEl) levelEl.textContent = (Number.isFinite(lvl) ? lvl.toFixed(1) : "--") + "%";
+  if (litersEl) {
+    if (Number.isFinite(lvl) && Number.isFinite(capacityLiters) && capacityLiters > 0) {
+      const liters = Math.round((Math.max(0, Math.min(100, lvl)) / 100) * capacityLiters);
+      litersEl.textContent = new Intl.NumberFormat().format(liters) + " L";
+    } else {
+      litersEl.textContent = "-- L";
+    }
+  }
   if(updatedEl) updatedEl.textContent = "Last updated: " + window.formatTs(d.ts);
   if(sourceEl) sourceEl.textContent = d.source || "—";
   if(tsEl) tsEl.textContent = d.ts || "—";
