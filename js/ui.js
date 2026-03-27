@@ -59,6 +59,7 @@ window.setTankUI = function(deviceId, latestObj){
   const badgeEl = document.getElementById("badge" + suf);
   const statusEl = document.getElementById("status" + suf);
   const capacityLiters = Number(window.TANK_CAPACITY_LITERS && window.TANK_CAPACITY_LITERS[deviceId]);
+  const displayScale = Number(window.DISPLAY_LEVEL_SCALE);
 
   if (!latestObj || !latestObj.data) {
     window.updateDeviceTitle(deviceId, null);
@@ -75,11 +76,12 @@ window.setTankUI = function(deviceId, latestObj){
   const d = latestObj.data;
   window.updateDeviceTitle(deviceId, d.firmware_version);
   const lvl = Number(d.level_pct);
+  const scaledLvl = Number.isFinite(lvl) ? lvl * (Number.isFinite(displayScale) ? displayScale : 1) : NaN;
 
-  if(levelEl) levelEl.textContent = (Number.isFinite(lvl) ? lvl.toFixed(1) : "--") + "%";
+  if(levelEl) levelEl.textContent = (Number.isFinite(scaledLvl) ? scaledLvl.toFixed(1) : "--") + "%";
   if (litersEl) {
-    if (Number.isFinite(lvl) && Number.isFinite(capacityLiters) && capacityLiters > 0) {
-      const liters = Math.round((Math.max(0, Math.min(100, lvl)) / 100) * capacityLiters);
+    if (Number.isFinite(scaledLvl) && Number.isFinite(capacityLiters) && capacityLiters > 0) {
+      const liters = Math.round((Math.max(0, Math.min(100, scaledLvl)) / 100) * capacityLiters);
       litersEl.textContent = new Intl.NumberFormat().format(liters) + " L";
     } else {
       litersEl.textContent = "-- L";
@@ -106,7 +108,7 @@ window.setTankUI = function(deviceId, latestObj){
   // update circular gauge (SVG path meter)
   try {
     const meter = document.getElementById('meter' + suf);
-    const pct = Number.isFinite(lvl) ? Math.max(0, Math.min(100, lvl)) : 0;
+    const pct = Number.isFinite(scaledLvl) ? Math.max(0, Math.min(100, scaledLvl)) : 0;
     if (meter) {
       meter.setAttribute('stroke-dasharray', `${pct} 100`);
       if (pct < window.LOW_THRESHOLD) meter.classList.add('low'); else meter.classList.remove('low');
